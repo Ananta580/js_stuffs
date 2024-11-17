@@ -1,22 +1,27 @@
 const http = require("http");
-const urlPath = require("url");
+const url = require("url");
 const fs = require("fs");
 const path = require("path");
 
+// Create an Web server
 http
   .createServer((req, res) => {
-    const parsedUrl = urlPath.parse(req.url);
+    // Parse the request URL to get file name
+    const parsedUrl = url.parse(req.url);
+    const filePath = path.join(__dirname, parsedUrl.pathname);
 
-    const filePath = path.join(__dirname, parsedUrl.path);
-
+    // Read the requested file with exact path
     fs.readFile(filePath, (error, data) => {
-      res.writeHead(404, { "Content-Type": "text/html" });
       if (error) {
+        // Handle file not found error
+        res.writeHead(404, { "Content-Type": "text/html" });
         res.end(
-          "<h3 style='color:red;'>The page you requested is not available<h3>"
+          "<h3 style='color:red;'>The page you requested is not available</h3>"
         );
         return;
       }
+
+      // Serve the file content
       res.writeHead(200, { "Content-Type": "text/html" });
       res.end(data);
     });
