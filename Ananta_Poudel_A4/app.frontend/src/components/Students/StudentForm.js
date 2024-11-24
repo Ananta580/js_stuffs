@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const StudentForm = () => {
+const StudentForm = ({ OnAddUpdate }) => {
   const [student, setStudent] = useState({
     firstName: "",
     lastName: "",
@@ -13,7 +13,6 @@ const StudentForm = () => {
   });
   const [courses, setCourses] = useState([]);
   const { studentId } = useParams();
-  const navigate = useNavigate();
 
   // Fetch courses when the form loads
   useEffect(() => {
@@ -45,9 +44,16 @@ const StudentForm = () => {
     if (studentId) {
       axios
         .put(`http://localhost:3000/students/${studentId}`, student)
-        .then((response) => {
+        .then(() => {
+          setStudent({
+            firstName: "",
+            lastName: "",
+            studentId: "",
+            semester: "",
+            courses: [],
+          });
+          OnAddUpdate();
           alert("Student updated successfully!");
-          navigate("/students");
         })
         .catch((error) => console.error("Error updating student", error));
     } else {
@@ -55,8 +61,15 @@ const StudentForm = () => {
       axios
         .post("http://localhost:3000/students", student)
         .then((response) => {
+          setStudent({
+            firstName: "",
+            lastName: "",
+            studentId: "",
+            semester: "",
+            courses: [],
+          });
+          OnAddUpdate();
           alert("Student created successfully!");
-          navigate("/students");
         })
         .catch((error) => console.error("Error creating student", error));
     }

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import axios from "axios";
 
-const CourseList = () => {
+const CourseList = forwardRef((props, ref) => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/courses")
-      .then((response) => setCourses(response.data))
-      .catch((error) => console.error(error));
+    getAllCourses();
   }, []);
 
   const handleDelete = (_id) => {
@@ -17,6 +19,17 @@ const CourseList = () => {
       .then(() => setCourses(courses.filter((course) => course._id !== _id)))
       .catch((error) => console.error(error));
   };
+
+  const getAllCourses = () => {
+    axios
+      .get("http://localhost:3000/courses")
+      .then((response) => setCourses(response.data))
+      .catch((error) => console.error(error));
+  };
+
+  useImperativeHandle(ref, () => ({
+    getAllCourses,
+  }));
 
   return (
     <div>
@@ -101,6 +114,6 @@ const CourseList = () => {
       </table>
     </div>
   );
-};
+});
 
 export default CourseList;

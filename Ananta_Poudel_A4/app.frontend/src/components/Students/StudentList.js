@@ -1,16 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const StudentList = () => {
+const StudentList = forwardRef((props, ref) => {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
+    getAllStudents();
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    getAllStudents,
+  }));
+
+  const getAllStudents = () => {
     axios
       .get("http://localhost:3000/students")
       .then((response) => setStudents(response.data))
       .catch((error) => console.error(error));
-  }, []);
+  };
 
   const handleDelete = (_id) => {
     axios
@@ -110,6 +123,6 @@ const StudentList = () => {
       </table>
     </div>
   );
-};
+});
 
 export default StudentList;

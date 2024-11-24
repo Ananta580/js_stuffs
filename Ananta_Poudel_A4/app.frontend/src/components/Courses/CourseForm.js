@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CourseForm = () => {
+const CourseForm = ({ OnAddUpdate }) => {
   const [course, setCourse] = useState({
     code: "",
     name: "",
@@ -15,6 +15,7 @@ const CourseForm = () => {
       .post("http://localhost:3000/courses", course)
       .then(() => {
         setCourse({ code: "", name: "", description: "", credits: "" });
+        OnAddUpdate();
         alert("Course created!");
       })
       .catch((error) => console.error(error));
