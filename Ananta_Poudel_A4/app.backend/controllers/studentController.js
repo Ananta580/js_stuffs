@@ -3,7 +3,7 @@ import Student from "../models/student.js";
 const studentController = {
   getAllStudents: async (req, res) => {
     try {
-      const students = await Student.find().populate("course");
+      const students = await Student.find().populate("courses");
       res.status(200).json(students);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ const studentController = {
 
   getStudentById: async (req, res) => {
     try {
-      const student = await Student.findById(req.params.id).populate("course");
+      const student = await Student.findById(req.params.id).populate("courses");
       if (!student) {
         return res.status(404).json({ message: "Student not found" });
       }
@@ -23,8 +23,7 @@ const studentController = {
   },
 
   createStudent: async (req, res) => {
-    const { name, age, grade, enrolled, course } = req.body;
-    const newStudent = new Student({ name, age, grade, enrolled, course });
+    const newStudent = new Student({ ...req.body });
 
     try {
       const savedStudent = await newStudent.save();
@@ -35,14 +34,12 @@ const studentController = {
   },
 
   updateStudent: async (req, res) => {
-    const { name, age, grade, enrolled, course } = req.body;
-
     try {
       const updatedStudent = await Student.findByIdAndUpdate(
         req.params.id,
-        { name, age, grade, enrolled, course },
+        { ...req.body },
         { new: true }
-      ).populate("course");
+      ).populate("courses");
 
       if (!updatedStudent) {
         return res.status(404).json({ message: "Student not found" });

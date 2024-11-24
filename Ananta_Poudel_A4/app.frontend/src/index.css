@@ -1,13 +1,87 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    @apply bg-neutral-800;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+*{
+    @apply text-neutral-200;
 }
+
+
+label{
+    @apply text-neutral-300 text-sm mb-1;
+}
+
+.dark-input, select{
+    @apply p-2 rounded focus:outline-none focus:ring-2 focus:ring-cyan-800 bg-neutral-700 border border-neutral-500;
+}
+
+button.primary{
+    @apply bg-cyan-800 p-2.5 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-800 hover:bg-cyan-700;
+}
+
+@layer components {
+    .s-container .s-select__control {
+      @apply bg-neutral-700 p-0.5 border border-neutral-500 hover:border-neutral-500;
+    }
+  
+    .s-container .s-select__control--is-focused {
+      @apply border-cyan-800 hover:border-cyan-800 shadow-none;
+    }
+  
+    .s-container .s-select__menu {
+      @apply bg-neutral-700 border-2 border-neutral-600;
+    }
+  
+    .s-container .s-select__option {
+      @apply text-neutral-200 bg-neutral-700 hover:bg-cyan-800;
+    }
+  
+    .s-container .s-select__indicator-separator {
+      @apply bg-neutral-400;
+    }
+
+    .s-container .s-select__input{
+        @apply outline-none;
+    }
+  
+    .s-container .s-select__input-container,
+    .s-container .s-select__placeholder,
+    .s-container .s-select__single-value {
+      @apply text-neutral-200;
+    }
+  
+    .s-container .s-select__multi-value {
+      @apply bg-neutral-600 rounded-md;
+    }
+  
+    .s-container .s-select__multi-value__label {
+      @apply text-neutral-100;
+    }
+  
+    .s-container .s-select__multi-value__remove {
+      @apply bg-neutral-500 hover:bg-red-600 ml-2;
+    }
+  
+    .s-container .s-select__multi-value__remove .css-tj5bde-Svg {
+      @apply text-neutral-400;
+    }
+  
+    .s-container .s-select__clear-indicator,
+    .s-container .s-select__dropdown-indicator {
+      @apply text-neutral-600;
+    }
+  
+    .s-container .s-select__clear-indicator:hover,
+    .s-container .s-select__dropdown-indicator:hover {
+      @apply text-neutral-500;
+    }
+  
+    .s-container .s-select__clear-indicator .css-tj5bde-Svg,
+    .s-container .s-select__dropdown-indicator .css-tj5bde-Svg {
+      @apply fill-current;
+    }
+  }
