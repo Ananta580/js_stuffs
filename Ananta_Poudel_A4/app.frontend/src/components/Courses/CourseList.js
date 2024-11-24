@@ -5,6 +5,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const CourseList = forwardRef((props, ref) => {
   const [courses, setCourses] = useState([]);
@@ -100,12 +101,20 @@ const CourseList = forwardRef((props, ref) => {
                   {course.description}
                 </td>
                 <td colSpan={2} className="py-2 px-4 border border-neutral-600">
-                  <button
-                    onClick={() => handleDelete(course._id)}
-                    className="bg-red-900 hover:bg-red-700 px-2 py-1 rounded"
-                  >
-                    Delete
-                  </button>
+                  <div>
+                    <Link
+                      to={`/courses/${course._id}`}
+                      className="bg-neutral-700 hover:bg-neutral-600 px-4 py-1.5 rounded"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(course._id)}
+                      className="bg-red-900 hover:bg-red-700 px-2 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CourseForm = ({ OnAddUpdate }) => {
   const [course, setCourse] = useState({
@@ -9,16 +10,43 @@ const CourseForm = ({ OnAddUpdate }) => {
     credits: "",
   });
 
+  const { courseId } = useParams();
+  const navigate = useNavigate();
+
+  // Fetch the student data if an ID is provided (for editing)
+  useEffect(() => {
+    if (courseId) {
+      axios
+        .get(`http://localhost:3000/courses/${courseId}`)
+        .then((response) => {
+          setCourse(response.data);
+        })
+        .catch((error) => console.error("Error fetching course data", error));
+    }
+  }, [courseId]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3000/courses", course)
-      .then(() => {
-        setCourse({ code: "", name: "", description: "", credits: "" });
-        OnAddUpdate();
-        alert("Course created!");
-      })
-      .catch((error) => console.error(error));
+    if (courseId) {
+      axios
+        .put(`http://localhost:3000/courses/${courseId}`, course)
+        .then(() => {
+          setCourse({ code: "", name: "", description: "", credits: "" });
+          navigate("/students");
+          OnAddUpdate();
+          alert("Course updated successfully!");
+        })
+        .catch((error) => console.error("Error updating course", error));
+    } else {
+      axios
+        .post("http://localhost:3000/courses", course)
+        .then(() => {
+          setCourse({ code: "", name: "", description: "", credits: "" });
+          OnAddUpdate();
+          alert("Course created!");
+        })
+        .catch((error) => console.error(error));
+    }
   };
 
   return (
@@ -66,7 +94,7 @@ const CourseForm = ({ OnAddUpdate }) => {
         />
       </div>
       <button type="submit" className="primary">
-        Add Course
+        {courseId ? "Update Course" : "Add Course"}
       </button>
     </form>
   );

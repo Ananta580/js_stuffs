@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const StudentForm = ({ OnAddUpdate }) => {
   const [student, setStudent] = useState({
@@ -13,6 +13,8 @@ const StudentForm = ({ OnAddUpdate }) => {
   });
   const [courses, setCourses] = useState([]);
   const { studentId } = useParams();
+
+  const navigate = useNavigate();
 
   // Fetch courses when the form loads
   useEffect(() => {
@@ -52,6 +54,7 @@ const StudentForm = ({ OnAddUpdate }) => {
             semester: "",
             courses: [],
           });
+          navigate("/students");
           OnAddUpdate();
           alert("Student updated successfully!");
         })
